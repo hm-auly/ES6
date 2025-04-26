@@ -178,3 +178,125 @@ function add(...numbers) {
 add(1, 2, 3);        // 6
 add(10, 20, 30, 40); // 100
 তুমি যত ইচ্ছা সংখ্যাই দাও, “...numbers” সবার জন্য একটা ব্যাগ!
+
+
+# ৩.৩: ফাংশন — নিজের বানানো জাদুকর
+ফাংশন মানে তুমি নিজের বানানো এক জাদুকর।
+
+ধরো তুমি একটা গান গাও:
+
+function sing() {
+  console.log("La la la...");
+}
+এখন তুমি সেই গান গাওয়াতে চাইলে:
+
+sing(); // La la la...
+তুমি চাইলে এই জাদুকরকে কিছু দিয়ে দিতে পারো:
+
+function greet(name) {
+  console.log(Hello, ${name}!);
+}
+
+greet("Auly"); // Hello, Auly!
+এটা এমন, তুমি “name” নামের একটা উপহার দাও, আর সে সেই নাম ধরে ডাকে।
+
+# Bonus: Arrow Function – নতুন ঢঙের কবিতা  একই কাজ নতুনভাবে:
+
+const greet = (name) => {
+  console.log(Hello, ${name}!);
+}
+এই হলো Arrow Function — কম কথায় বেশি কাজ।
+
+# এই অধ্যায়ে যা শিখলে (Recap):
+... মানে দুইটা ভিন্ন ম্যাজিক — একবার ছড়িয়ে (Spread), একবার একত্র (Rest)
+
+ফাংশন হলো তোমার নিজের বানানো যন্ত্র — তুমি বললে কাজ করবে
+
+ফাংশনে তুমি চাইলে উপহার পাঠাতে পারো (argument), আর সেটা দিয়ে কাজ করাবে |
+
+
+
+# অধ্যায় ৪: অবজেক্ট, ডিস্ট্রাকচারিং আর ক্লাস — জাভাস্ক্রিপ্টের চরিত্র গঠন
+জাভাস্ক্রিপ্টকে যদি একটা সিনেমা ধরা হয়, তাহলে এই অধ্যায় তার চরিত্র নির্মাণের গল্প।
+মানে, তুমি যাদের নিয়ে কাজ করবে, তাদের সব বৈশিষ্ট্য, আচরণ, সবকিছু এখানেই গড়ে তুলবে।
+
+# ৪.১: অবজেক্ট (Object) — একটি চরিত্রের খতিয়ান
+তুমি যেমন — নাম আছে, বয়স আছে, পছন্দ অপছন্দ আছে —
+তেমনি জাভাস্ক্রিপ্টেও একেকটা জিনিসকে "Object" দিয়ে বানানো যায়।
+
+# উদাহরণ:
+
+const poet = {
+  name: "Auly",
+  age: 24,
+  write: function() {
+    console.log("আমি কবিতা লিখি...");
+  }
+};
+# এই poet কে যদি বলো তার নাম কী?
+
+console.log(poet.name); // Auly
+
+# তাকে বলো লেখো তো:
+
+poet.write(); // আমি কবিতা লিখি...
+# Object মানে হলো: একটা জিনিস যেটার অনেক গুণ আছে।
+
+# ৪.২: Destructuring — বড় কাহিনির ছোট ছোট অংশ টেনে বের করা
+তুমি যদি পুরো poet Object থেকে শুধু নাম আর বয়স নিতে চাও, তাহলে কী করো?
+
+আগে করতে হতো:
+
+const name = poet.name;
+const age = poet.age;
+
+# ES6 বলল: ছোট করে নাও ভাই!
+
+const { name, age } = poet;
+console.log(name); // Auly
+console.log(age);  // 24
+# একে বলে Destructuring — বড় কিছু থেকে ছোট ছোট টুকরা তুলে নেওয়া।
+
+# আরেকটা উদাহরণ: Array Destructuring
+
+const colors = ["red", "green", "blue"];
+const [firstColor, secondColor] = colors;
+console.log(firstColor);  // red
+console.log(secondColor); // green
+
+
+# ৪.৩: ক্লাস (Class) — নিজের মতো চরিত্র বানাও
+তুমি যদি নিজেই একটা Object এর কাঠামো তৈরি করতে চাও,
+তাহলে তুমি একটা Class বানাতে পারো।
+
+# Class মানে হলো – প্ল্যান। আর Object মানে হলো – সেই প্ল্যান থেকে বানানো জিনিস।
+
+চলো উদাহরণ দেখি:
+
+class Poet {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  write() {
+    console.log(${this.name} লিখছে কবিতা...);
+  }
+}
+এখন তুমি চাইলে কবিদের বানাতে পারো:
+
+const poet1 = new Poet("Auly", 24);
+const poet2 = new Poet("Rafiq", 30);
+
+poet1.write(); // Auly লিখছে কবিতা...
+poet2.write(); // Rafiq লিখছে কবিতা...
+এখানে constructor() হলো জন্মদাতা — Object তৈরির সময় চালু হয়।
+আর this.name মানে হলো — ওই Object এর নিজের নাম।
+
+
+# এই অধ্যায়ের সারাংশ:
+
+জিনিস	মানে	উদাহরণ
+Object	একাধিক গুণ-সম্পন্ন বস্তু	const person = {name: "Auly"}
+Destructuring	Object/Array থেকে অংশ বের করা	const {name} = person
+Class	চরিত্র বা Object তৈরির খাঁচা	class Poet { ... }
