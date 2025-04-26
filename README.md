@@ -300,3 +300,322 @@ poet2.write(); // Rafiq লিখছে কবিতা...
 Object	একাধিক গুণ-সম্পন্ন বস্তু	const person = {name: "Auly"}
 Destructuring	Object/Array থেকে অংশ বের করা	const {name} = person
 Class	চরিত্র বা Object তৈরির খাঁচা	class Poet { ... }
+
+
+
+# অধ্যায় ৫: Promise আর Async – সময়ের সাথে খেলা
+তুমি তো জানো, কবিতা যেমন ধীরে ধীরে হৃদয়ে গেঁথে যায়,
+তেমনি কিছু কিছু কাজ আছে যেগুলো একটু সময় নেয়।
+
+জাভাস্ক্রিপ্ট বলল —
+
+“আমি সবসময় সোজাসুজি চলি না ভাই। কিছু কাজ থাকে যেগুলো এখনই শেষ হবে না, একটু পরে হবে।”
+
+এইরকম দেরি করে শেষ হওয়া কাজকে বলে Asynchronous কাজ।
+
+# ৫.১: প্রমিস (Promise) — ওয়াদা রইলো!
+ধরো তুমি এক বন্ধুকে বললা:
+
+“তুই যদি কবিতা লিখে আনিস, আমি তোকে চা খাওয়াবো।”
+
+বন্ধু বললো:
+“প্রমিস করলাম।”
+
+এটাই হলো JavaScript এর Promise!
+
+let myPromise = new Promise(function(resolve, reject) {
+  let poemWritten = true;
+
+  if (poemWritten) {
+    resolve("চা খাওয়ানো হবে!");
+  } else {
+    reject("তুই তো কবিতা আনিস নি!");
+  }
+});
+এখন তুমি যদি সেই প্রমিসে বিশ্বাস রাখতে চাও:
+
+myPromise
+  .then(function(message) {
+    console.log("Success:", message);
+  })
+  .catch(function(error) {
+    console.log("Error:", error);
+  });
+
+ # ৫.২: async/await — ধৈর্যের খেলা
+তুমি যদি প্রমিসের ওপর বসে চুপচাপ অপেক্ষা করতে চাও, তাহলে async/await ব্যবহার করতে পারো।
+
+async function bringTea() {
+  try {
+    const result = await myPromise;
+    console.log(result);  // চা খাওয়ানো হবে!
+  } catch (error) {
+    console.log(error);   // তুই তো কবিতা আনিস নি!
+  }
+}
+
+bringTea();
+এখানে await মানে:
+"আমি অপেক্ষা করছি যতক্ষণ না তুমি প্রমিস রাখো।"
+
+# এই অধ্যায়ের মূল কথা:
+Promise হলো একটা ওয়াদা — পরে গিয়ে ঠিক বা ভুল হবে
+
+.then() দিয়ে তুমি বলো, "ওয়াদা পূর্ণ হলে কী হবে"
+
+.catch() দিয়ে বলো, "ওয়াদা ভাঙলে কী হবে"
+
+async/await হলো — ধীরে সুস্থে, ধৈর্যের সাথে, গল্পের মতো অপেক্ষা
+
+
+# অধ্যায় ৬: মডিউল, ইমপোর্ট আর এক্সপোর্ট — নিজের কোড ভাগ করে পৃথিবীকে দাও
+ধরো, তুমি একটা বড় কবিতার বই লিখছো।
+তুমি কি সব কবিতা এক পাতায় লিখবে?
+না! তুমি বলবে —
+
+“এই পাতায় প্রেমের কবিতা, ওই পাতায় প্রকৃতির কবিতা…”
+
+একইভাবে, জাভাস্ক্রিপ্টেও আমরা বড় কোডকে ছোট ছোট ফাইলে ভাগ করে রাখি।
+আর এই ভাগ করা, আদান-প্রদানের পুরো ব্যাপারটাকেই বলে Modules।
+
+# ৬.১: export — কোডকে বাইরের দুনিয়ায় পাঠাও
+ধরো, একটা poem.js ফাইল আছে। এখানে তুমি একটা ফাংশন লিখছো:
+
+// poem.js
+export function writePoem() {
+  console.log("আমি একটি সুন্দর কবিতা লিখছি...");
+}
+এখানে export মানে হলো —
+"এই ফাংশনটা বাইরে পাঠানো হচ্ছে, যাতে অন্য ফাইল থেকে ব্যবহার করা যায়।"
+
+তুমি চাইলে একটা ভেরিয়েবলও export করতে পারো:
+
+export const poetName = "Auly";
+
+# ৬.২: import — অন্যের লেখা নিজের কোডে এনে ব্যবহার করো
+এখন তুমি আরেকটা ফাইলে (ধরো main.js) ওই ফাংশন আনতে চাও।
+
+// main.js
+import { writePoem, poetName } from './poem.js';
+
+writePoem();            // আমি একটি সুন্দর কবিতা লিখছি...
+console.log(poetName);  // Auly
+এটাই হলো মডিউল সিস্টেম!
+তুমি নিজের কোডকে ভাগ করে রাখছো —
+আর যেখানে দরকার, শুধু দরকারি অংশটুকু নিয়ে নিচ্ছো।
+
+# ৬.৩: Default Export — একবারে একটাই পাঠাও
+তুমি চাইলে একটা ফাইলে একটামাত্র জিনিস default দিয়ে পাঠাতে পারো।
+
+// poet.js
+export default function poemStyle() {
+  console.log("গভীর আবেগে ভরা ছন্দে লিখি কবিতা...");
+}
+এখন ইমপোর্ট করার সময় নাম চেঞ্জ করে নিতে পারো:
+
+// main.js
+import poem from './poet.js';
+
+poem(); // গভীর আবেগে ভরা ছন্দে লিখি কবিতা...
+এই অধ্যায়ের সারাংশ:
+
+# কাজ	কীভাবে	মানে
+export	export function...	অন্য ফাইলকে কিছু পাঠানো
+import	import { name } from...	অন্য ফাইল থেকে কিছু আনা
+default export	export default ...	একটাই জিনিস পাঠানো, ইচ্ছেমতো নামে আনা যায়|
+
+
+# অধ্যায় 7: ES6 এর বাকি কিছু গুরুত্বপূর্ণ বিষয়
+তুমি যেভাবে আগের অংশগুলো শিখেছো, এবার সেভাবে class, modules, generator, iterators, map ও set সম্পর্কে বুঝবো।
+
+# 7.1: ক্লাস (Classes) — নতুনদের জন্য সহজ ওয়ার্কফ্লো
+এটি ES6 এ নতুনভাবে এসেছে। আগে জাভাস্ক্রিপ্টে prototype নিয়ে কাজ করা লাগতো, কিন্তু class এর মাধ্যমে কোড লেখা অনেক সহজ হয়ে গেছে।
+
+ক্লাস এর মাধ্যমে তুমি object-oriented programming (OOP) স্টাইলের কোড লিখতে পারো।
+
+// ক্লাস তৈরি
+class Poet {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  // method তৈরি
+  writePoem() {
+    console.log(${this.name} কবিতা লিখছে...);
+  }
+}
+
+// ক্লাস ব্যবহার
+const poet1 = new Poet('Auly', 24);
+poet1.writePoem(); // Auly কবিতা লিখছে...
+এখানে Poet ক্লাস তৈরি করেছি এবং constructor এর মাধ্যমে name আর age প্রপার্টি সেট করেছি। তারপর writePoem() মেথড তৈরি করেছি, যাতে কবি কবিতা লেখে।
+
+# 7.2: মডিউলস (Modules) — কোড ভাগ করে কাজ করা
+আমরা আগেই শিখেছি যে modules দিয়ে আমরা কোড ভাগ করে রাখতে পারি। এখানে দুইটি ফাইলের উদাহরণ:
+
+poem.js (অন্য ফাইলে):
+
+export const poetName = 'Auly';
+export function writePoem() {
+  console.log(${poetName} কবিতা লিখছে...);
+}
+main.js (ব্যবহারকারী ফাইল):
+
+import { poetName, writePoem } from './poem.js';
+
+console.log(poetName);   // Auly
+writePoem();            // Auly কবিতা লিখছে...
+এখানে export দিয়ে কিছু data এবং function পাঠানো হয়েছে, আর import দিয়ে আমরা সেগুলো ব্যবহার করছি।
+
+# 7.3: জেনারেটর (Generators) — স্টপ & রেসুম এর মজা
+জেনারেটর ফাংশনগুলোর মধ্যে তুমি yield ব্যবহার করতে পারো, যাতে ফাংশন থেকে কিছু value ফেরত পায়। তুমি যখন চাও, তখন yield দিয়ে return করতে পারো, তারপর আবার ফাংশন চালু করতে পারো।
+
+function* poemGenerator() {
+  yield 'প্রথম কবিতা';
+  yield 'দ্বিতীয় কবিতা';
+  yield 'তৃতীয় কবিতা';
+}
+
+const poems = poemGenerator();
+
+console.log(poems.next().value);  // প্রথম কবিতা
+console.log(poems.next().value);  // দ্বিতীয় কবিতা
+console.log(poems.next().value);  // তৃতীয় কবিতা
+এখানে * দিয়ে ফাংশনকে generator বানানো হয়েছে, এবং next() দিয়ে next value পাওয়া যাচ্ছে। yield একে একে value ফেরত দেয়।
+
+# 7.4: ইটারেটরস (Iterators) — যেকোনো কোডে আগাতে থাকো
+iterators হচ্ছে Object বা array এর মধ্যে একে একে চলা। এটি এমনভাবে কাজ করে যেন তুমি একবারে একটা করে value এক্সেস করতে পারো।
+
+ধরা যাক, তোমার কাছে একটা array আছে:
+
+let poems = ['Poem 1', 'Poem 2', 'Poem 3'];
+
+let iterator = poems[Symbol.iterator]();
+
+console.log(iterator.next().value);  // Poem 1
+console.log(iterator.next().value);  // Poem 2
+console.log(iterator.next().value);  // Poem 3
+এখানে Symbol.iterator দিয়ে poems array এর ইটারেটর তৈরি করেছি। এরপর next() দিয়ে একে একে আইটেমগুলো পেয়েছি।
+
+# 7.5: Map — Key/Value দিয়ে ডাটা সংরক্ষণ
+Map এ তুমি key/value পেয়ার দিয়ে ডাটা সংরক্ষণ করতে পারো। এটা অনেক ভালো, কারণ Map এমনভাবে কাজ করে যা object এর চেয়ে বেশি সুবিধাজনক।
+
+let poetMap = new Map();
+
+poetMap.set('Auly', 'Poet');
+poetMap.set('Kamal', 'Writer');
+poetMap.set('Rana', 'Artist');
+
+console.log(poetMap.get('Auly'));  // Poet
+console.log(poetMap.has('Rana'));  // true
+console.log(poetMap.size);         // 3
+এখানে set() দিয়ে key/value পেয়ার যোগ করেছি, get() দিয়ে value বের করেছি, আর has() দিয়ে চেক করেছি key আছে কিনা।
+
+# 7.6: Set — ইউনিক মান সংরক্ষণ
+Set দিয়ে তুমি শুধুমাত্র ইউনিক মান (duplicates ছাড়া) সংরক্ষণ করতে পারো।
+
+let poetsSet = new Set();
+
+poetsSet.add('Auly');
+poetsSet.add('Kamal');
+poetsSet.add('Auly'); // Duplicate value
+
+console.log(poetsSet);  // Set { 'Auly', 'Kamal' }
+এখানে add() দিয়ে ডাটা যোগ করেছি। Set আউটপুট দেখায়, duplicate মানগুলো রাখা হয়নি।
+
+# 7.7: Object Destructuring (এটা কিছুটা আগে বলেছিলাম)
+Object Destructuring দিয়ে তুমি একসাথে অনেকগুলো প্রপার্টি বের করতে পারো:
+
+const poet = {
+  name: 'Auly',
+  age: 24,
+  genre: 'Poetry'
+};
+
+const { name, age } = poet;
+console.log(name);  // Auly
+console.log(age);   // 24
+এখানে {} ব্রেস ব্যবহার করে object এর প্রপার্টি বের করেছি একসাথে।
+
+# এখন তুমি পুরো ES6 শিখে ফেলেছো!
+তুমি এখন JavaScript এর অনেক শক্তিশালী ফিচার বুঝতে পারো, যেমন:
+
+Classes দিয়ে ক্লাস বানানো
+
+Modules দিয়ে কোড ভাগ করে রাখা
+
+Generators দিয়ে প্রগ্রাম স্টপ করা
+
+Iterators দিয়ে array/object ট্রাভার্স করা
+
+Map ও Set দিয়ে ইউনিক ডাটা ও key-value পেয়ার ম্যানেজ করা
+
+
+
+# অবশ্যই! এখন পর্যন্ত তুমি JavaScript ES6 এর বেশ কিছু গুরুত্বপূর্ণ বিষয় শিখেছো। নিচে সবগুলোকে একটি লিস্ট আকারে দেয়া হলো:
+
+# JavaScript ES6 শিখেছি:
+
+# 1. Let ও Const
+       _ let ও const ব্যবহার করে ভ্যারিয়েবল ডিক্লেয়ার করা।
+
+       _ const এর মাধ্যমে অপরিবর্তনীয় মান সেট করা।
+
+# 2. Arrow Functions (এ্যারো ফাংশন)
+
+      _ এ্যারো ফাংশন ব্যবহার করে সংক্ষিপ্তভাবে ফাংশন লেখা।
+
+# 3. Template Literals (টেমপ্লেট লিটারাল)
+
+       _ Backticks ব্যবহার করে মাল্টিলাইন স্ট্রিং এবং ডাইনামিক ভ্যালু ইনজেক্ট করা।
+
+
+
+# 4. Destructuring
+
+       _ Array ও Object এর ডাটা সরাসরি বের করা।
+
+# 5. Spread & Rest Operators
+
+        _ Spread (...) দিয়ে array বা object এর ভ্যালু এক্সটেন্ড করা।
+
+        _ Rest (...) দিয়ে ফাংশনে অনেক আর্গুমেন্ট নেয়া।
+
+# 6. Default Parameters (ডিফল্ট প্যারামিটারস)
+
+        _ ফাংশনে ডিফল্ট মান সেট করা।
+
+# 7. Promises & Async/Await (প্রমিস ও অ্যাসিঙ্ক/অওয়েট)
+
+        _ Promises ব্যবহার করে অ্যাসিঙ্ক্রোনাস কোড লেখা।
+
+        _ Async/Await এর মাধ্যমে সহজভাবে অ্যাসিঙ্ক্রোনাস কোড লেখা।
+
+# 8. Classes (ক্লাসেস)
+
+        _ Class ও Constructor ব্যবহার করে অবজেক্ট তৈরি করা।
+
+# 9. Modules (মডিউলস)
+
+      _ export ও import দিয়ে কোড ভাগ করে রাখা।
+
+# 10. Generators (জেনারেটরস)
+
+        _ yield ব্যবহার করে জেনারেটর ফাংশন থেকে ভ্যালু ফেরত পাওয়া।
+
+# 11. Iterators (ইটারেটরস)
+
+        _ Symbol.iterator ব্যবহার করে array বা object ট্রাভার্স করা।
+
+# 12. Map
+
+        _ Map ব্যবহার করে key/value পেয়ার সংরক্ষণ করা এবং সহজে অ্যাক্সেস করা।
+
+# 13. Set
+
+        _ Set ব্যবহার করে unqiue values সংরক্ষণ করা।
+
+# 14. Object Destructuring (অবজেক্ট ডেস্ট্রাকচারিং)
+
+      _ অবজেক্টের বিভিন্ন প্রপার্টি একসাথে বের করা।
